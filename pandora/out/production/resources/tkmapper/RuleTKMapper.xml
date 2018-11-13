@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.d1m.pandora.domain.mybatis.tkmapper.RuleTKMapper">
+    <resultMap id="BaseResultMap" type="cn.d1m.pandora.domain.entity.Rule">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="rule" jdbcType="VARCHAR" property="rule"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="quantity" jdbcType="INTEGER" property="quantity"/>
+        <result column="property" jdbcType="VARCHAR" property="property"/>
+        <result column="cycle" jdbcType="VARCHAR" property="cycle"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+        <result column="last_updated_time" jdbcType="TIMESTAMP" property="lastUpdatedTime"/>
+        <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id as id,
+        code as code,
+        rule as rule,
+        name as name,
+        quantity as quantity,
+        property as property,
+        cycle as cycle,
+        created_time as created_time,
+        created_by as created_by,
+        last_updated_time as last_updated_time,
+        last_updated_by as last_updated_by
+    </sql>
+
+    <sql id="Base_Alias_Column_List">
+        r.id as id,
+        r.code as code,
+        r.rule as rule,
+        r.name as name,
+        r.quantity as quantity,
+        r.property as property,
+        r.cycle as cycle,
+        r.created_time as created_time,
+        r.created_by as created_by,
+        r.last_updated_time as last_updated_time,
+        r.last_updated_by as last_updated_by
+    </sql>
+
+    <sql id="searchParams">
+        <if test="id!=null">
+            id = #{id}
+        </if>
+        <if test="code!=null">
+            and code = #{code}
+        </if>
+        <if test="name!=null">
+            and name = #{name}
+        </if>
+        <if test="quantity!=null">
+            and quantity =#{quantity}
+        </if>
+        <if test="property!=null">
+            and property = #{property}
+        </if>
+        <if test="cycle!=null">
+            and cycle = #{cycle}
+        </if>
+        <if test="createdBy!=null">
+            and created_by = #{createdBy}
+        </if>
+    </sql>
+
+    <select id="findByParams" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rule
+        <where>
+            <include refid="searchParams"/>
+        </where>
+        <if test="orderByCreatedAtDesc!=null">
+            order by created_time desc
+        </if>
+    </select>
+
+    <select id="findOneByParams" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rule
+        <where>
+            <include refid="searchParams"/>
+        </where>
+    </select>
+
+    <!--<resultMap id="RuleDtoResultMap" type="cn.d1m.pandora.domain.dto.RuleDto">-->
+    <!--<id column="id" jdbcType="VARCHAR" property="id"/>-->
+    <!--<result column="code" jdbcType="VARCHAR" property="code"/>-->
+    <!--<result column="rule" jdbcType="VARCHAR" property="rule"/>-->
+    <!--<result column="name" jdbcType="VARCHAR" property="name"/>-->
+    <!--<result column="quantity" jdbcType="INTEGER" property="quantity"/>-->
+    <!--<result column="property" jdbcType="VARCHAR" property="property"/>-->
+    <!--<result column="cycle" jdbcType="VARCHAR" property="cycle"/>-->
+    <!--<result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>-->
+    <!--<result column="created_by" jdbcType="VARCHAR" property="createdBy"/>-->
+    <!--<result column="last_updated_time" jdbcType="TIMESTAMP" property="lastUpdatedTime"/>-->
+    <!--<result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>-->
+    <!--<result column="reminder_before_expiration" jdbcType="INTEGER" property="reminderBeforeExpiration"/>-->
+    <!--<collection property="consumerLevels" column="id" fetchType="lazy" select="ruleConsumerLevel"/>-->
+    <!--</resultMap>-->
+
+    <!--<select id="ruleConsumerLevel" resultType="cn.d1m.pandora.domain.entity.RuleConsumerLevel">-->
+    <!--select-->
+    <!--<include refid="cn.d1m.pandora.domain.mybatis.tkmapper.ConsumerLevelMapper.Base_Alias_Column_List"/>-->
+    <!--from consumer_level as cl-->
+    <!--left join card_consumer_level rcl on rcl.consumer_level_id = cl.id-->
+    <!--where rcl.card_id = #{ruleId}-->
+    <!--</select>-->
+
+    <!--<select id="findOneRuleDtoByParams" resultType="cn.d1m.pandora.domain.dto.RuleDto">-->
+    <!--select-->
+    <!--<include refid="Base_Column_List"/>-->
+    <!--from rule-->
+    <!--<where>-->
+    <!--<include refid="searchParams"/>-->
+    <!--</where>-->
+    <!--</select>-->
+
+
+</mapper>

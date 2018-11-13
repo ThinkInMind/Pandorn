@@ -1,0 +1,17 @@
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.d1m.social.wechat.pandora.integration.layer.api.entry
+
+spring:
+  jackson:
+    serialization:                        #null字段自动忽略
+      indent_output: true                 #格式化打印json字符串
+      fail_on_empty_beans: false          #循环依赖自动拆开
+    default-property-inclusion: non_null  #null输出忽略
+    date-format: "yyyy-MM-dd HH:mm:ss"    #默认日期格式化
+    deserialization:
+      fail_on_unknown_properties: false
+
+logging:
+  config: ${log.path:logs}/log4j2.xml

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.d1m.social.wechat.card.api.dao.GuestNormalProfileMapper">
+	<cache type="com.d1m.social.wechat.pandora.integration.layer.api.redis.RedisCache"/>
+	<select id="search" parameterType="com.d1m.social.wechat.pandora.integration.layer.api.model.GuestNormalProfile" resultType="com.d1m.social.wechat.pandora.integration.layer.api.model.GuestNormalProfile" useCache="false">
+		SELECT
+			id,
+			firstname,
+			lastname,
+			gender,
+			mobile_phone,
+			email,
+			subscribe,
+			source,
+			channel,
+			openid,
+			unionid,
+			created_time,
+			updated_time
+		FROM
+			guest_normal_profile
+		where 1=1	
+	</select>
+	
+	<select id="searchToken" parameterType="com.d1m.social.wechat.pandora.integration.layer.api.model.GuestNormalProfile" resultType="com.d1m.social.wechat.pandora.integration.layer.api.model.GuestNormalProfile" useCache="true">
+		SELECT
+			id,
+			firstname,
+			lastname,
+			gender,
+			mobile_phone,
+			email,
+			subscribe,
+			source,
+			channel,
+			openid,
+			unionid,
+			created_time,
+			updated_time
+		FROM
+			guest_normal_profile
+		where 1=1	and token = #{token}
+	</select>
+</mapper>

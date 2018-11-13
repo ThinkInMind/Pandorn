@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.d1m.pandora.domain.mybatis.tkmapper.CardTKMapper">
+    <resultMap id="BaseResultMap" type="cn.d1m.pandora.domain.entity.Card">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="rule_id" jdbcType="VARCHAR" property="ruleId"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="type_code" jdbcType="VARCHAR" property="typeCode"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="stock" jdbcType="INTEGER" property="stock"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+        <result column="begin_day_after_send" jdbcType="INTEGER" property="beginDayAfterSend"/>
+        <result column="duration_day" jdbcType="INTEGER" property="durationDay"/>
+        <result column="minimum_charge" jdbcType="DECIMAL" property="minimumCharge"/>
+        <result column="cash_discounts" jdbcType="DECIMAL" property="cashDiscounts"/>
+        <result column="discount_rate" jdbcType="TINYINT" property="discountRate"/>
+        <result column="nature" jdbcType="TINYINT" property="nature"/>
+        <result column="discount_type" jdbcType="TINYINT" property="discountType"/>
+        <result column="validity_period_type" jdbcType="TINYINT" property="validityPeriodType"/>
+        <result column="reminder_before_expiration" jdbcType="INTEGER" property="reminderBeforeExpiration"/>
+        <result column="quantity" jdbcType="INTEGER" property="quantity"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        begin_time,
+        end_time,
+        rule_id,
+        description,
+        created_time,
+        type_code,
+        name,
+        title,
+        stock,
+        version,
+        begin_day_after_send,
+        duration_day,
+        minimum_charge,
+        cash_discounts,
+        discount_rate,
+        nature,
+        discount_type,
+        validity_period_type,
+        reminder_before_expiration,
+        quantity,
+        status
+    </sql>
+
+    <sql id="Base_Alias_Column_List">
+        c.id as id,
+        c.begin_time as begin_time,
+        c.end_time as end_time,
+        c.rule_id as rule_id,
+        c.description as description,
+        c.created_time as created_time,
+        c.type_code as type_code,
+        c.name as name,
+        c.title as title,
+        c.stock as stock,
+        c.version as version,
+        c.begin_day_after_send as begin_day_after_send,
+        c.duration_day as duration_day,
+        c.minimum_charge as minimum_charge,
+        c.cash_discounts as cash_discounts,
+        c.discount_rate as discount_rate,
+        c.nature as nature,
+        c.discount_type as discount_type,
+        c.validity_period_type as validity_period_type,
+        c.reminder_before_expiration as reminder_before_expiration,
+        c.quantity as quantity,
+        c.status as status
+    </sql>
+    <select id="selectByPrimaryKey" resultType="cn.d1m.pandora.domain.entity.Card">
+        select
+        <include refid="Base_Column_List"/>
+        from card
+        where id = #{id}
+    </select>
+
+    <sql id="findParams">
+        <if test="id!=null">
+            id=#{id}
+        </if>
+        <if test="ids!=null">
+            and id in
+            <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+                #{tiem}
+            </foreach>
+        </if>
+        <if test="beginTime!=null">
+            and begin_time = #{beginTime}
+        </if>
+        <if test="endTime!=null">
+            and end_time= #{endTime}
+        </if>
+        <if test="ruleId!=null">
+            and rule_id = #{ruleId}
+        </if>
+        <if test="typeCode!=null">
+            and type_code = #{typeCode}
+        </if>
+        <if test="version!=null">
+            and version = #{version}
+        </if>
+        <if test="name!=null">
+            and name = #{name}
+        </if>
+        <if test="title!=null">
+            and title = #{title}
+        </if>
+        <if test="nature!=null">
+            and nature = #{nature}
+        </if>
+        <if test="status!=null">
+            and status = #{status}
+        </if>
+    </sql>
+
+    <resultMap id="CardDtoResultMap" type="cn.d1m.pandora.domain.dto.CardDto">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="rule_id" jdbcType="VARCHAR" property="ruleId"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="type_code" jdbcType="VARCHAR" property="typeCode"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+        <result column="begin_day_after_send" jdbcType="INTEGER" property="beginDayAfterSend"/>
+        <result column="duration_day" jdbcType="INTEGER" property="durationDay"/>
+        <result column="minimum_charge" jdbcType="DECIMAL" property="minimumCharge"/>
+        <result column="cash_discounts" jdbcType="DECIMAL" property="cashDiscounts"/>
+        <result column="discount_rate" jdbcType="TINYINT" property="discountRate"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="stock" jdbcType="INTEGER" property="stock"/>
+        <result column="nature" jdbcType="TINYINT" property="nature"/>
+        <result column="discount_type" jdbcType="TINYINT" property="discountType"/>
+        <result column="validity_period_type" jdbcType="TINYINT" property="validityPeriodType"/>
+        <result column="reminder_before_expiration" jdbcType="INTEGER" property="reminderBeforeExpiration"/>
+        <result column="quantity" jdbcType="INTEGER" property="quantity"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <association property="rule" column="rule_id"  fetchType="lazy"
+                     select="findRuleByPrimaryKey" >
+            <id column="id" jdbcType="VARCHAR" property="id"/>
+            <result column="code" jdbcType="VARCHAR" property="code"/>
+            <result column="rule" jdbcType="VARCHAR" property="rule"/>
+            <result column="name" jdbcType="VARCHAR" property="name"/>
+            <result column="quantity" jdbcType="INTEGER" property="quantity"/>
+            <result column="property" jdbcType="VARCHAR" property="property"/>
+            <result column="cycle" jdbcType="VARCHAR" property="cycle"/>
+            <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+            <result column="created_by" jdbcType="VARCHAR" property="createdBy"/>
+            <result column="last_updated_time" jdbcType="TIMESTAMP" property="lastUpdatedTime"/>
+            <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy"/>
+        </association>
+        <collection column="id" property="levels" fetchType="lazy"
+                    select="cn.d1m.pandora.domain.mybatis.tkmapper.ConsumerLevelMapper.findByCardId"/>
+
+
+    </resultMap>
+
+    <select id="findCardDtoByParams" resultMap="CardDtoResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from card
+        <where>
+            <include refid="findParams"/>
+        </where>
+    </select>
+
+
+    <!-- 查询所有礼券的信息 -->
+
+
+    <!--<sql id="findCardParam">
+        <if test="name != null  and name!='' ">
+            and name =#{name}
+        </if>
+        <if test="ruleId !=null and ruleId!=''">
+            and rule_id =#{ruleId}
+        </if>
+        <if test="beginTime !=null  and beginTime!='' ">
+            and begin_Time =#{beginTime}
+        </if>
+        <if test="endTime !=null  and endTime!='' ">
+            and end_Time =#{endTime}
+        </if>
+        <if test="description !=null  and description!='' ">
+            and description =#{description}
+        </if>
+        <if test="typeCode !=null  and typeCode!='' ">
+            and type_Code =#{typeCode}
+        </if>
+        <if test="title !=null  and title!='' ">
+            and title =#{title}
+        </if>
+        <if test="stock !=null  and stock!='' ">
+            and stock =#{stock}
+        </if>
+        <if test="version !=null  and version!='' ">
+            and version =#{version}
+        </if>
+        <if test="cashDiscounts !=null  and cashDiscounts!='' ">
+            and cash_Discounts =#{cashDiscounts}
+        </if>
+        <if test="nature !=null  and nature!='' ">
+            and nature =#{nature}
+        </if>
+        <if test="discountType !=null  and discountType!='' ">
+            and discount_Type =#{discountType}
+        </if>
+        <if test="reminderBeforeExpiration !=null  and reminderBeforeExpiration!='' ">
+            and reminder_Before_Expiration =#{reminderBeforeExpiration}
+        </if>
+        <if test="quantity !=null  and quantity!='' ">
+            and quantity =#{quantity}
+        </if>
+    </sql>-->
+
+
+    <select id="selectListCard" resultMap="CardDtoResultMap">
+        select
+        *
+        from card
+        <where>
+            <include refid="findParams"/>
+        </where>
+    </select>
+
+    <select id="findRuleByPrimaryKey" resultType="cn.d1m.pandora.domain.entity.Rule">
+        select *
+        from rule
+        where id = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.d1m.pandora.dao.RuleMapper">
+    <cache type="cn.d1m.pandora.redis.RedisCache"/>
+
+    <insert id="insertRule" parameterType="cn.d1m.pandora.entry.Rule" keyColumn="id" flushCache="false">
+        <selectKey keyProperty="id" order="BEFORE" resultType="String">
+            SELECT REPLACE(UUID(),"-","")
+        </selectKey>
+        insert into rule
+        (id,rule,name,quantity,code,
+        begin_timestamp,end_timestamp,sended_begin_timestamp,sended_end_timestamp,
+        title,property,cycle,status,quality,vip1,vip2,vip3,vip4,
+        description,isdelete,created_time,created_by)
+        select #{id},#{rule},#{name},#{quantity},ifnull((select LPAD(cast(max(ifnull(code,0)) as unsigned int)+1,6,0)
+        from rule) ,LPAD(1,6,0)),
+        #{beginTimestamp},#{endTimestamp},#{sendedBeginTimestamp},#{sendedEndTimestamp},
+        #{title},#{property},#{cycle},0,#{quality},#{vip1},#{vip2},#{vip3},#{vip4},
+        #{description},0,current_timestamp,#{createdBy}
+    </insert>
+    <update id="updateRule" parameterType="cn.d1m.pandora.entry.Rule" flushCache="false">
+        update rule
+        <set>
+            <if test="rule != null and rule != ''">
+                rule = #{rule},
+            </if>
+            <if test="quantity != null and quantity != ''">
+                quantity = #{quantity},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="beginTimestamp != null">
+                begin_timestamp = #{beginTimestamp,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTimestamp != null ">
+                end_timestamp = #{endTimestamp,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sendedBeginTimestamp != null and sendedBeginTimestamp != ''">
+                sended_begin_timestamp = #{sendedBeginTimestamp},
+            </if>
+            <if test="sendedEndTimestamp != null and sendedEndTimestamp != ''">
+                sended_end_timestamp = #{sendedEndTimestamp},
+            </if>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="property != null and property != ''">
+                property = #{property},
+            </if>
+            <if test="cycle != null and cycle != ''">
+                cycle = #{cycle},
+            </if>
+            <if test="quality != null and quality != ''">
+                quality = #{quality},
+            </if>
+            <if test="vip0 != null and vip0 != ''">
+                vip0 = #{vip0},
+            </if>
+            <if test="vip1 != null and vip1 != ''">
+                vip1 = #{vip1},
+            </if>
+            <if test="vip2 != null and vip2 != ''">
+                vip2 = #{vip2},
+            </if>
+            <if test="vip3 != null and vip3 != ''">
+                vip3 = #{vip3},
+            </if>
+            <if test="vip4 != null and vip4 != ''">
+                vip4 = #{vip4},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="createdBy != null and createdBy != ''">
+                last_updated_by = #{createdBy},
+            </if>
+            status = 0,
+            isdelete = 0,
+
+            last_updated_time = current_timestamp
+        </set>
+        where id=#{id} and status =0 and isdelete = 0
+    </update>
+    <update id="updateRuleDelete" parameterType="cn.d1m.pandora.entry.Rule" flushCache="false">
+        update rule
+        <set>
+            <if test="isdelete != null and isdelete != ''">
+                isdelete = 1,
+            </if>
+            <if test="createdBy != null and createdBy != ''">
+                last_updated_by = #{createdBy},
+            </if>
+            last_updated_time = current_timestamp
+        </set>
+        where id=#{id}
+    </update>
+    <update id="updateRuleStatus" parameterType="cn.d1m.pandora.entry.Rule" flushCache="false">
+        update rule
+        <set>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="createdBy != null and createdBy != ''">
+                last_updated_by = #{createdBy},
+            </if>
+            last_updated_time = current_timestamp
+        </set>
+        where id=#{id}
+    </update>
+    <select id="selectRuleById" parameterType="java.lang.String" resultType="cn.d1m.pandora.entry.Rule"
+            useCache="false">
+        select id,
+               code,
+               rule,
+               name,
+               quantity,
+               begin_timestamp,
+               end_timestamp,
+               sended_begin_timestamp,
+               sended_end_timestamp,
+               title,
+               property,
+               cycle,
+               status,
+               quality,
+               vip0,
+               vip1,
+               vip2,
+               vip3,
+               vip4,
+               description
+        from rule r
+        where id = #{id}
+    </select>
+    <select id="selectRuleLikeByCode" parameterType="java.lang.String" resultType="cn.d1m.pandora.entry.Rule"
+            useCache="false">
+        select id,
+               code,
+               rule,
+               name,
+               quantity,
+               begin_timestamp,
+               end_timestamp,
+               sended_begin_timestamp,
+               sended_end_timestamp,
+               title,
+               property,
+               cycle,
+               status,
+               quality,
+               vip0,
+               vip1,
+               vip2,
+               vip3,
+               vip4,
+               description
+        from rule r
+        where code like '%#{code}%'
+    </select>
+    <select id="selectRuleByCode" parameterType="java.lang.String" resultType="cn.d1m.pandora.entry.Rule"
+            useCache="false">
+        select id,
+               code,
+               rule,
+               name,
+               quantity,
+               begin_timestamp,
+               end_timestamp,
+               sended_begin_timestamp,
+               sended_end_timestamp,
+               title,
+               property,
+               cycle,
+               status,
+               quality,
+               vip0,
+               vip1,
+               vip2,
+               vip3,
+               vip4,
+               description
+        from rule r
+        where code = #{code}
+    </select>
+
+    <select id="selectRuleSendById" parameterType="java.lang.String" resultType="java.lang.Integer" useCache="false">
+        select count(*)
+        from rule r
+                 inner join card c on c.rule_id = r.id
+        where r.id = #{id}
+          and r.status = 0
+    </select>
+    <select id="selectRuleList" parameterType="java.lang.String" resultType="cn.d1m.pandora.entry.Rule"
+            useCache="false">
+        select id ,code,rule,name,quantity,
+        begin_timestamp,
+        end_timestamp,
+        sended_begin_timestamp,
+        sended_end_timestamp,
+        title,property,cycle,status,quality,vip0,vip1,vip2,vip3,vip4,description
+        from rule r
+        <where>
+            <if test="code != null and code != ''">
+                code like '%#{code}%' or name like '%#{code}%'
+            </if>
+        </where>
+    </select>
+    <select id="selectRegistRuleList" parameterType="java.lang.String" resultType="cn.d1m.pandora.entry.Rule"
+            useCache="false">
+        select id,
+               code,
+               rule,
+               name,
+               quantity,
+               begin_timestamp,
+               end_timestamp,
+               sended_begin_timestamp,
+               sended_end_timestamp,
+               title,
+               property,
+               cycle,
+               status,
+               quality,
+               vip0,
+               vip1,
+               vip2,
+               vip3,
+               vip4,
+               description
+        from rule r
+        where r.begin_timestamp &lt; current_timestamp
+          and r.end_timestamp &gt; current_timestamp
+          and status = '1'
+          and isdelete = '0'
+          and rule = '1'
+    </select>
+</mapper>

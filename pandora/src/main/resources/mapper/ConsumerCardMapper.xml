@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.d1m.pandora.dao.ConsumerCardMapper">
+    <cache type="cn.d1m.pandora.redis.RedisCache"/>
+    <select id="findvalidCardByOpenid" parameterType="java.lang.String" resultType="cn.d1m.pandora.entry.ConsumerCard"
+            useCache="true">
+
+        select cc.id,
+               cc.begin_time,
+               cc.end_time,
+               cc.status,
+               cc.receive_time,
+               cc.redeem_time,
+               r.name,
+               r.title,
+               r.property,
+               r.cycle,
+               r.status,
+               r.description,
+               bp.name as posBranchName,
+               cc.code
+        from consumer_card c
+                 inner join card cc on cc.id = c.id
+                 left join rule r on cc.rule_id = r.id
+                 left join business_pos_branch bp on cc.business_pos_branch_id = bp.id
+        where c.openid = #{openid}
+          and r.isdelete = 0
+          and cc.status = 'normal'
+    </select>
+    <select id="findInvalidCardByOpenid" parameterType="java.lang.String" resultType="cn.d1m.pandora.entry.ConsumerCard"
+            useCache="true">
+        select cc.id,
+               cc.begin_time,
+               cc.end_time,
+               cc.status,
+               cc.receive_time,
+               cc.redeem_time,
+               r.name,
+               r.title,
+               r.property,
+               r.cycle,
+               r.status,
+               r.description,
+               bp.name as posBranchName
+        from consumer_card c
+                 inner join card cc on cc.id = c.id
+                 left join rule r on cc.rule_id = r.id
+                 left join business_pos_branch bp on cc.business_pos_branch_id = bp.id
+        where c.openid = #{openid}
+          and r.isdelete = 0
+          and (cc.status = 'expired' or cc.status = 'redeemed')
+    </select>
+    <select id="getCardCount" parameterType="java.lang.String" resultType="cn.d1m.pandora.entry.ConsumerCardCount"
+            useCache="true">
+        select "normal" as keyStatus, count(*) as couponsCount
+        from consumer_card c
+                 inner join card cc on c.id = cc.id
+        where cc.status = 'normal'
+          and c.openid = #{openid}
+        union
+        select "expired" as keyStatus, count(*) as couponsCount
+        from consumer_card c
+                 inner join card cc on c.id = cc.id
+        where (cc.status = 'expired' or cc.status = 'redeemed')
+          and c.openid = #{openid}
+    </select>
+    <update id="redeemedCoupon" parameterType="cn.d1m.pandora.entry.ConsumerCard" flushCache="true">
+        update card
+        <set>
+            <if test="status != null and status != ''">
+                status = 'redeemed',
+            </if>
+            <if test="posTicketNo != null and posTicketNo != ''">
+                pos_ticket_no = #{posTicketNo},
+            </if>
+            <if test="businessPosBranchId != null and businessPosBranchId != ''">
+                business_pos_branch_id = #{businessPosBranchId},
+            </if>
+            redeem_time = current_timestamp
+        </set>
+        where code =#{code} and status ='normal'
+    </update>
+    <insert id="insertCard" parameterType="cn.d1m.pandora.entry.ConsumerCard" flushCache="true">
+        <selectKey keyProperty="id" order="BEFORE" resultType="String">
+            SELECT REPLACE(UUID(),"-","")
+        </selectKey>
+        insert into card
+        (id,begin_time,end_time,rule_id,status,receive_time,business_pos_branch_id,code,description,created_time)
+        value(
+        #{id},#{begin_time},#{end_time},#{rule_id},#{status},current_timestamp,
+        #{business_pos_branch_id},#{code},#{description},current_timestamp
+        )
+    </insert>
+    <insert id="insertConsumerCard" parameterType="cn.d1m.pandora.entry.ConsumerCard" flushCache="true">
+        <selectKey keyProperty="id" order="BEFORE" resultType="String">
+            SELECT REPLACE(UUID(),"-","")
+        </selectKey>
+        insert into consumer_card (id,cardId,openid,created_time)
+        value(
+        #{id},#{cardId},#{openid},current_timestamp
+        )
+    </insert>
+</mapper>

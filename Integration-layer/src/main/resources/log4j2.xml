@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="5">
+    <Properties>
+        <Property name="log.level">info</Property>
+        <Property name="log.path">logs</Property>
+        <Property name="project.name">integration-layer</Property>
+        <Property name="elk_log_pattern">${sys:PID} %4p %t (%F:%L) - %m%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n"/>
+        </Console>
+
+        <RollingFile name="fullLog" fileName="${log.path}/${project.name}.log"
+                     filePattern="${log.path}/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="200 MB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="errorLog" fileName="${log.path}/${project.name}-error.log"
+                     filePattern="${log.path}/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i-error.log.gz">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n"/>
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="200 MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <logger name="tk.mybatis.spring.mapper.ClassPathMapperScanner" level="error"/>
+        <logger name="org.mybatis.spring.mapper.ClassPathMapperScanner" level="error"/>
+        <logger name="org.springframework.jdbc.datasource.DataSourceTransactionManager" level="info"/>
+        <logger name="org.springframework.security.web" level="info"/>
+        <logger name="org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor" level="info"/>
+        <logger name="com.d1m.social.wechat.pandora.integration.layer.api" level="${sys:log.level}"/>
+        <!--fixme when full push request, -->
+        <AsyncRoot level="info" includeLocation="true">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="fullLog"/>
+            <AppenderRef ref="errorLog"/>
+        </AsyncRoot>
+    </Loggers>
+</Configuration>

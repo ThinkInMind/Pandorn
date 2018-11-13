@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.d1m.pandora.domain.mybatis.tkmapper.ConsumerLevelMapper">
+    <resultMap id="BaseResultMap" type="cn.d1m.pandora.domain.entity.ConsumerLevel">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="loyalty_tier" jdbcType="VARCHAR" property="loyaltyTier"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        name,
+        description,
+        loyalty_tier,
+        created_at,
+        deleted
+    </sql>
+    <sql id="Base_Alias_Column_List">
+        cl.id as id,
+        cl.name as name,
+        cl.description as description,
+        cl.loyalty_tier as loyalty_tier,
+        cl.created_at as created_at,
+        cl.deleted as deleted
+    </sql>
+
+    <select id="findByCardId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Alias_Column_List"/>
+        from consumer_level as cl
+        left join card_consumer_level ccl on ccl.consumer_level_id = cl.id
+        where cl.deleted = false and ccl.card_id = #{cardId}
+    </select>
+</mapper>

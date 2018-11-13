@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.d1m.pandora.domain.mybatis.tkmapper.SmsSenderTKMapper">
+    <resultMap id="BaseResultMap" type="cn.d1m.pandora.domain.entity.SmsSender">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="verification_code" jdbcType="VARCHAR" property="verificationCode"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime"/>
+        <result column="times" jdbcType="VARCHAR" property="times"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        verification_code,
+        mobile,
+        expire_time,
+        times,
+        created_time
+    </sql>
+</mapper>

@@ -1,0 +1,32 @@
+consul-host-map:
+  local: 10.60.1.191
+  dev: 10.12.121.53
+  uat: 10.60.1.122
+  prod: ${ENV_HOST:localhost}
+spring:
+  application:
+    name: integration-layer
+  profiles:
+    active: dev
+  cloud:
+    consul:
+      host: ${consul-host-map.${spring.profiles.active}}
+      port: 8500
+      config:
+        enabled: true
+        format: properties
+        name: ${spring.application.name}
+        data-key: ${spring.profiles.active}
+      discovery:
+        tags: ${spring.profiles.active}-${random.int}
+
+server:
+  port: 10304
+
+---
+spring:
+  profiles: dev,uat,prod
+  cloud:
+    consul:
+      discovery:
+        hostname: ${spring.application.name}

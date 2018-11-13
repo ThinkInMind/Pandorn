@@ -1,0 +1,40 @@
+= pandora integration-layer service
+d1m.group
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+
+== Gradle构建项目
+
+本项目是gradle构建，主要优点是比较灵活、使用简单(同样配置只需maven四分之一代码)、本地无需安装maven和gradle。灵活方面是构建脚本可写java代码，例如自定义war打包脚本
+
+=== win系类:
+[source, bash,subs="{markup-in-source}"]
+----
+gradlew clean -Denv=prod&#x278a;  -Dno=2.1&#x278b;  build dockerPush&#x278c;
+----
+=== mac、linux:
+[source, bash,subs="{markup-in-source}"]
+----
+sh gradlew -Dorg.gradle.daemon=false -Denv=prod&#x278a; -Dno=2.1&#x278b;  clean build dockerPush&#x278c;
+----
+
+&#x278a; env=prod是打release包，其他值或者无值均是snapshot包 +
+&#x278b; no为版本号，默认为latest +
+&#x278c; 打包成docker镜像并push到仓库
+
+=== 最终build出来的镜像格式
+[source, bash,subs="{markup-in-source}"]
+----
+docker.d1m.cn/${project.name&#x278a;}:${version&#x278b;}
+----
+&#x278a; 项目名称 +
+&#x278b; 版本号同build脚本中的no
+
+== Integration-layer
+
+潘多拉小程序项目,scv,gigiya接口整合项目
+
+== pandora基础项目
+
+集成mysql,redis,rabbitmq,consul

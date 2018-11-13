@@ -1,0 +1,15 @@
+create table guest_normal_profile (
+id	Varchar(32)	comment 'UUID token',
+firstname	Varchar(32)	,
+lastname	Varchar(32)	,
+gender	char(6)	comment 'male/female',
+mobile_phone	Varchar(11)	,
+email	Varchar(64)	,
+subscribe	Varchar(3)	comment 'yes/no',
+source	Varchar(16) comment	'miniprogram/pc/wechat/mobile',
+channel	Varchar(16) comment	'weibo/wechat/wechat ad/baidu/brandsite/other',
+openid	Varchar(28)	,
+unionid	Varchar(28)	,
+created_time	timestamp	DEFAULT now(),
+updated_time	timestamp	DEFAULT now(),
+PRIMARY key(id));

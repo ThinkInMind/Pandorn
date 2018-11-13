@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.d1m.pandora.dao.ConsumerMapper">
+    <cache type="cn.d1m.pandora.redis.RedisCache"/>
+    <select id="findByOpenid" parameterType="java.lang.String" resultType="cn.d1m.pandora.entry.Consumer"
+            useCache="true">
+
+        select id,
+               openid,
+               title_salutation,
+               first_name,
+               last_name,
+               gender,
+               birthday_day,
+               birthday_month,
+               birthday_year,
+               mobile_phone,
+               email_address,
+               country,
+               created_time,
+               mobile_area_code,
+               unionid,
+               last_updated_time,
+               status,
+               vip_number,
+               loyalty_tier,
+               loyalty_points,
+               points_to_next_tier,
+               source,
+               is_oauth,
+               crmid
+        from consumer
+        where openid = #{open_id}
+    </select>
+    <select id="findById" parameterType="java.lang.String" resultType="cn.d1m.pandora.entry.Consumer" useCache="true">
+        select id,
+               openid,
+               title_salutation,
+               first_name,
+               last_name,
+               gender,
+               birthday_day,
+               mobile_area_code,
+               birthday_month,
+               birthday_year,
+               mobile_phone,
+               email_address,
+               country,
+               created_time,
+               unionid,
+               last_updated_time,
+               status,
+               vip_number,
+               loyalty_tier,
+               loyalty_points,
+               points_to_next_tier,
+               source,
+               is_oauth,
+               crmid
+        from consumer
+        where id = #{id}
+    </select>
+    <insert id="add" parameterType="cn.d1m.pandora.entry.Consumer" keyColumn="id" flushCache="true">
+        <selectKey keyProperty="id" order="BEFORE" resultType="String">
+            SELECT REPLACE(UUID(),"-","")
+        </selectKey>
+        insert into consumer
+        (id,first_name,last_name,title_salutation,gender,birthday_day,birthday_month,birthday_year,mobile_phone,email_address,source,channel,openid,unionid,country
+        ,created_time,is_oauth)
+        values(#{id},#{firstName},#{lastName},#{titleSalutation},#{gender},#{birthdayDay},#{birthdayMonth},#{birthdayYear},#{mobilePhone},#{emailAddress},#{source}
+        ,#{channel},#{openid},#{unionid},#{country},current_timestamp,#{isOauth})
+    </insert>
+
+    <update id="update" parameterType="cn.d1m.pandora.entry.Consumer" flushCache="true">
+        update consumer
+        <set>
+            <if test="firstName != null and firstName != ''">
+                first_name = #{firstName},
+            </if>
+            <if test="lastName != null and lastName != ''">
+                last_name = #{lastName},
+            </if>
+            <if test="titleSalutation != null and titleSalutation != ''">
+                title_salutation = #{titleSalutation},
+            </if>
+            <if test="gender != null and gender != ''">
+                gender = #{gender},
+            </if>
+            <if test="birthdayDay != null and birthdayDay != ''">
+                birthday_day = #{birthdayDay},
+            </if>
+            <if test="birthdayMonth != null and birthdayMonth != ''">
+                birthday_month = #{birthdayMonth},
+            </if>
+            <if test="birthdayYear != null and birthdayYear != ''">
+                birthday_year = #{birthdayYear},
+            </if>
+            <if test="emailAddress != null and emailAddress != ''">
+                email_address = #{emailAddress},
+            </if>
+            <if test="source != null and source != ''">
+                source = #{source},
+            </if>
+            <if test="channel != null and channel != ''">
+                channel = #{channel},
+            </if>
+            <if test="openid != null and openid != ''">
+                openid = #{openid},
+            </if>
+            <if test="unionid != null and unionid != ''">
+                unionid = #{unionid},
+            </if>
+            <if test="isOauth != null and isOauth != ''">
+                is_oauth = #{isOauth},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="crmid != null and crmid != ''">
+                crmid = #{crmid},
+            </if>
+            <if test="mobileAreaCode != null and mobileAreaCode != ''">
+                mobile_area_code = #{mobileAreaCode},
+            </if>
+            <if test="mobilePhone != null and mobilePhone != ''">
+                mobile_phone = #{mobilePhone},
+            </if>
+            last_updated_time=current_timestamp
+        </set>
+        where id=#{id}
+    </update>
+    <update id="updateConsumerRegistered" parameterType="cn.d1m.pandora.entry.Consumer" flushCache="false">
+        update consumer
+        <set>
+
+            <if test="crmid != null and crmid != ''">
+                crmid = #{crmid},
+            </if>
+            <if test="source != null and source != ''">
+                source = #{source},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            last_updated_time=current_timestamp
+        </set>
+        where id=#{id}
+    </update>
+    <update id="updateWithOaurh" parameterType="cn.d1m.pandora.entry.Consumer" flushCache="false">
+        update consumer
+        <set>
+            <if test="isOauth != null and isOauth != ''">
+                is_oauth = #{isOauth},
+            </if>
+            <if test="mobilePhone != null and mobilePhone != ''">
+                mobile_phone = #{mobilePhone},
+            </if>
+            <if test="unionid != null and unionid != ''">
+                unionid = #{unionid},
+            </if>
+            last_updated_time=current_timestamp
+        </set>
+        where id=#{id}
+    </update>
+</mapper>

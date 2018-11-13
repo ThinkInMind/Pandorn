@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.d1m.pandora.dao.SmsSenderMapper">
+    <cache type="cn.d1m.pandora.redis.RedisCache"/>
+    <select id="findByMobilePhone" parameterType="java.lang.String" resultType="cn.d1m.pandora.entry.SmsSender"
+            useCache="true">
+        select id, verification_code, expire_time, times
+        from sms_sender
+        where mobile = #{mobile}
+          and expire_time > current_timestamp
+    </select>
+    <insert id="insertSmsSender" parameterType="cn.d1m.pandora.entry.SmsSender" keyColumn="id" flushCache="true">
+        <selectKey keyProperty="id" order="BEFORE" resultType="String">
+            SELECT REPLACE(UUID(),"-","")
+        </selectKey>
+        insert into sms_sender
+        ( id,verification_code,mobile,expire_time,times,created_time )
+        values( #{id},#{verificationCode},#{mobile},#{expireTime},#{times,jdbcType=TIMESTAMP},current_timestamp )
+    </insert>
+    <update id="upateTimesByMobilePhone" parameterType="cn.d1m.pandora.entry.SmsSender" flushCache="true">
+        update sms_sender
+        <set>
+            times = times +1,
+            <if test="verificationCode != null and verificationCode != ''">
+                verification_code = #{verificationCode},
+            </if>
+            <if test="expireTime != null and expireTime != ''">
+                expire_time = #{expireTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where mobile=#{mobile}
+    </update>
+</mapper>

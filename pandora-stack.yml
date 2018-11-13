@@ -1,0 +1,44 @@
+#docker stack deploy -c /root/docker-swarm/pandora-stack.yml service
+version: '3'
+
+services:
+
+  pandora:
+    image: docker.d1m.cn/pandora:latest
+    hostname: wechat-dev-web02
+    networks:
+    - d1m_cloud_overlay
+    ports:
+    - 10306:10306
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /data/log/pandora:/logs
+    environment:
+      JAVA_OPTS: -Dlog.level=debug  -Xms128m -Xmx512m -Dspring.profiles.active=dev
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels: [APP=pandora]
+
+  integration-layer:
+    image: docker.d1m.cn/integration-layer:latest
+    hostname: wechat-dev-web02
+    networks:
+    - d1m_cloud_overlay
+    ports:
+    - 10304:10304
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /data/log/Integration-layer:/logs
+    environment:
+      #JAVA_OPTS: -Dspring.cloud.consul.discovery.hostname=10.12.121.53 -Xms128m -Xmx512m -Dspring.profiles.active=dev
+      JAVA_OPTS: -Xms128m -Xmx512m -Dspring.profiles.active=dev
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels: [APP=Integration-layer]
+
+networks:
+  d1m_cloud_overlay:
+    external:
+      name: d1m_cloud_overlay

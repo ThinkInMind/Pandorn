@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.d1m.pandora.domain.mybatis.tkmapper.BusinessPosBranchTKMapper">
+    <resultMap id="BaseResultMap" type="cn.d1m.pandora.domain.entity.BusinessPosBranch">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="pos_branch_code" jdbcType="VARCHAR" property="posBranchCode"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        name,
+        pos_branch_code,
+        created_time
+    </sql>
+
+    <sql id="Base_Alias_Column_List">
+        bpb.id as id,
+        bpb.name as name,
+        bpb.pos_branch_code as pos_branch_code,
+        bpb.created_time as created_time
+    </sql>
+
+    <select id="selectByPrimaryKey" resultType="cn.d1m.pandora.domain.entity.BusinessPosBranch">
+        select
+        <include refid="Base_Column_List"/>
+        from business_pos_branch
+        where id = #{id}
+    </select>
+</mapper>

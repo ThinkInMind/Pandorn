@@ -1,0 +1,31 @@
+stages:
+- build
+- deploy
+- docker-tag
+job1:
+  stage: build
+  only:
+  - dev
+  tags:
+  - shell-pandora-dev-build
+  script:
+  - ./gradlew -Dorg.gradle.daemon=false clean build dockerPush
+
+job2:
+  stage: deploy
+  only:
+  - dev
+  tags:
+  - shell-pandora-dev-deploy
+  script:
+  - docker stack deploy -c pandora-stack.yml service
+  - cp -f pandora-stack.yml /tmp/pandora-stack.yml
+
+job1.5:
+  stage: docker-tag
+  only:
+  - tags
+  tags:
+  - shell-pandora-dev-build
+  script:
+  - ./gradlew -Dorg.gradle.daemon=false -Dversion=$CI_COMMIT_TAG clean build dockerPush

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.d1m.pandora.domain.mybatis.tkmapper.ConsumerCardTKMapper">
+    <resultMap id="BaseResultMap" type="cn.d1m.pandora.domain.entity.ConsumerCard">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="card_id" jdbcType="VARCHAR" property="cardId"/>
+        <result column="openid" jdbcType="VARCHAR" property="openid"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="rule_id" jdbcType="VARCHAR" property="ruleId"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="business_pos_branch_id" jdbcType="VARCHAR" property="businessPosBranchId"/>
+        <result column="pos_ticket_no" jdbcType="VARCHAR" property="posTicketNo"/>
+        <result column="receive_time" jdbcType="TIMESTAMP" property="receiveTime"/>
+        <result column="redeem_time" jdbcType="TIMESTAMP" property="redeemTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        card_id,
+        openid,
+        created_time,
+        rule_id,
+        status,
+        code,
+        business_pos_branch_id,
+        pos_ticket_no,
+        receive_time,
+        redeem_time
+    </sql>
+    <sql id="Base_Alias_Column_List">
+        cc.id as id,
+        cc.card_id as card_id,
+        cc.openid as openid,
+        cc.created_time as created_time,
+        cc.rule_id as rule_id,
+        cc.status as status,
+        cc.code as code,
+        cc.business_pos as business_pos_branch_id,
+        cc.pos_ticket_n as pos_ticket_no,
+        cc.receive_time as receive_time,
+        cc.redeem_time as redeem_time,
+    </sql>
+
+    <resultMap id="ConsumerCardDtoResultMap" type="cn.d1m.pandora.domain.dto.ConsumerCardDto">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="card_id" jdbcType="VARCHAR" property="cardId"/>
+        <result column="openid" jdbcType="VARCHAR" property="openid"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="rule_id" jdbcType="VARCHAR" property="ruleId"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="business_pos_branch_id" jdbcType="VARCHAR" property="businessPosBranchId"/>
+        <result column="pos_ticket_no" jdbcType="VARCHAR" property="posTicketNo"/>
+        <result column="receive_time" jdbcType="TIMESTAMP" property="receiveTime"/>
+        <result column="redeem_time" jdbcType="TIMESTAMP" property="redeemTime"/>
+        <association column="code" property="consumer" fetchType="lazy"
+                     select="cn.d1m.pandora.domain.mybatis.tkmapper.ConsumerTKMapper.findConsumerByCode"/>
+        <association property="rule" column="{id=rule_id}" fetchType="lazy"
+                     select="cn.d1m.pandora.domain.mybatis.tkmapper.RuleTKMapper.findOneByParams"/>
+        <association property="card" column="card_id" fetchType="lazy"
+                     select="cn.d1m.pandora.domain.mybatis.tkmapper.CardTKMapper.selectByPrimaryKey"/>
+    </resultMap>
+
+    <sql id="findParams">
+        <if test="id!=null">
+            id = #{id}
+        </if>
+        <if test="cardId!=null">
+            and card_id = #{cardId}
+        </if>
+        <if test="openid!=null">
+            and openid = #{openid}
+        </if>
+        <if test="code!=null">
+            and code = #{code}
+        </if>
+        <if test="status!=null">
+            and status = #{status}
+        </if>
+    </sql>
+
+
+    <select id="findCardDtoByParams" resultMap="ConsumerCardDtoResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from consumer_card
+        <where>
+            <include refid="findParams"/>
+        </where>
+
+    </select>
+
+
+
+
+
+</mapper>

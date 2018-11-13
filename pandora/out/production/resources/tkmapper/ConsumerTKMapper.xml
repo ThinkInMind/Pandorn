@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.d1m.pandora.domain.mybatis.tkmapper.ConsumerTKMapper">
+    <resultMap id="BaseResultMap" type="cn.d1m.pandora.domain.entity.Consumer">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="first_name" jdbcType="VARCHAR" property="firstName"/>
+        <result column="last_name" jdbcType="VARCHAR" property="lastName"/>
+        <result column="email_address" jdbcType="VARCHAR" property="emailAddress"/>
+        <result column="mobile_phone" jdbcType="VARCHAR" property="mobilePhone"/>
+        <result column="mobile_area_code" jdbcType="VARCHAR" property="mobileAreaCode"/>
+        <result column="birthday_day" jdbcType="VARCHAR" property="birthdayDay"/>
+        <result column="birthday_month" jdbcType="VARCHAR" property="birthdayMonth"/>
+        <result column="birthday_year" jdbcType="VARCHAR" property="birthdayYear"/>
+        <result column="title_salutation" jdbcType="VARCHAR" property="titleSalutation"/>
+        <result column="gender" jdbcType="VARCHAR" property="gender"/>
+        <result column="vip_number" jdbcType="VARCHAR" property="vipNumber"/>
+        <result column="loyalty_points" jdbcType="VARCHAR" property="loyaltyPoints"/>
+        <result column="loyalty_tier" jdbcType="VARCHAR" property="loyaltyTier"/>
+        <result column="loyalty_points_expiry_date" jdbcType="VARCHAR" property="loyaltyPointsExpiryDate"/>
+        <result column="next_loyalty_tier" jdbcType="VARCHAR" property="nextLoyaltyTier"/>
+        <result column="points_to_next_tier" jdbcType="VARCHAR" property="pointsToNextTier"/>
+        <result column="previous_loyalty_tier" jdbcType="VARCHAR" property="previousLoyaltyTier"/>
+        <result column="last_birthday_discount_redemption_date" jdbcType="VARCHAR"
+                property="lastBirthdayDiscountRedemptionDate"/>
+        <result column="openid" jdbcType="VARCHAR" property="openid"/>
+        <result column="unionid" jdbcType="VARCHAR" property="unionid"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="crmid" jdbcType="VARCHAR" property="crmid"/>
+        <result column="channel" jdbcType="VARCHAR" property="channel"/>
+        <result column="source" jdbcType="VARCHAR" property="source"/>
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="last_updated_time" jdbcType="TIMESTAMP" property="lastUpdatedTime"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="is_oauth" jdbcType="VARCHAR" property="isOauth"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        first_name,
+        last_name,
+        email_address,
+        mobile_phone,
+        mobile_area_code,
+        birthday_day,
+        birthday_month,
+        birthday_year,
+        title_salutation,
+        gender,
+        vip_number,
+        loyalty_points,
+        loyalty_tier,
+        loyalty_points_expiry_date,
+        next_loyalty_tier,
+        points_to_next_tier,
+        previous_loyalty_tier,
+        last_birthday_discount_redemption_date,
+        openid,
+        unionid,
+        status,
+        crmid,
+        channel,
+        source,
+        created_time,
+        last_updated_time,
+        country,
+        is_oauth
+    </sql>
+
+    <sql id="Base_Alias_Column_List">
+        c.id as id,
+        c.first_name as first_name,
+        c.last_name as last_name,
+        c.email_address as email_address,
+        c.mobile_phone as mobile_phone,
+        c.mobile_area_code as mobile_area_code,
+        c.birthday_day as birthday_day,
+        c.birthday_month as birthday_month,
+        c.birthday_year as birthday_year,
+        c.title_salutation as title_salutation,
+        c.gender as gender,
+        c.vip_number as vip_number,
+        c.loyalty_points as loyalty_points,
+        c.loyalty_tier as loyalty_tier,
+        c.loyalty_points_expiry_date as loyalty_points_expiry_date,
+        c.next_loyalty_tier as next_loyalty_tier,
+        c.points_to_next_tier as points_to_next_tier,
+        c.previous_loyalty_tier as previous_loyalty_tier,
+        c.last_birthday_discount_redemption_date as last_birthday_discount_redemption_date,
+        c.openid as openid,
+        c.unionid as unionid,
+        c.status as status,
+        c.crmid as crmid,
+        c.channel as channel,
+        c.source as source,
+        c.created_time as created_time,
+        c.last_updated_time as last_updated_time,
+        c.country as country,
+        c.is_oauth as is_oauth
+    </sql>
+
+    <select id="findConsumerByCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Alias_Column_List"/>
+        from consumer as c
+        left join consumer_card as cc on c.openid = cc.openid
+        where cc.code = #{code}
+    </select>
+</mapper>

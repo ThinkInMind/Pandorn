@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.d1m.pandora.domain.mybatis.tkmapper.BusinessBaMapper">
+    <resultMap id="BaseResultMap" type="cn.d1m.pandora.domain.entity.BusinessBa">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="business_pos_branch_id" jdbcType="VARCHAR" property="businessPosBranchId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="role" jdbcType="VARCHAR" property="role"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+        <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        business_pos_branch_id,
+        username,
+        email,
+        status,
+        password,
+        role,
+        created_at,
+        updated_at
+    </sql>
+    <sql id="Base_Alias_Column_List">
+        ba.id as id,
+        ba.business_pos_branch_id as business_pos_branch_id,
+        ba.username as username,
+        ba.email as email,
+        ba.status as status,
+        ba.password as password,
+        ba.role as role,
+        ba.created_at as created_at,
+        ba.updated_at as updated_at
+    </sql>
+
+    <resultMap id="BusinessBaDtoResultMap" type="cn.d1m.pandora.domain.dto.BusinessBaDto">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="business_pos_branch_id" jdbcType="VARCHAR" property="businessPosBranchId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="role" jdbcType="VARCHAR" property="role"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+        <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+        <association property="businessPosBranch" column="business_pos_branch_id" fetchType="lazy"
+                     select="cn.d1m.pandora.domain.mybatis.tkmapper.BusinessPosBranchTKMapper.selectByPrimaryKey"/>
+    </resultMap>
+
+    <select id="findBusinessBaDtoByParams" resultType="cn.d1m.pandora.domain.dto.BusinessBaDto">
+        select
+        <include refid="Base_Column_List"/>
+        from business_pos_branch
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="ids != null">
+                and id in
+                <foreach collection="ids" index="item" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="username != null">
+                and username = #{username}
+            </if>
+            <if test="email != null">
+                and email = #{email}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="statuses != null">
+                and status in
+                <foreach collection="statuses" index="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+</mapper>

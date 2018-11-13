@@ -1,0 +1,67 @@
+buildscript {
+
+    ext {
+        springBootVersion = '1.5.13.RELEASE'
+    }
+
+    repositories {
+        maven {
+            url "https://repo.chejianer.com/repository/maven-public/"
+        }
+    }
+
+    dependencies {
+        classpath "gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.20.1"
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+allprojects {
+
+    buildscript {
+        repositories {
+            maven {
+                url "https://repo.chejianer.com/repository/maven-public/"
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url "https://repo.chejianer.com/repository/maven-public/"
+        }
+        maven { url "http://maven.d1m.cn/content/repositories/releases/" }
+    }
+    configurations {
+        all*.exclude group: "org.antlr", module: "antlr4-annotations"
+    }
+}
+
+subprojects {
+
+    group = 'cn.d1m.wechat'
+    version = System.getProperty("version", "latest")
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'groovy'
+    apply plugin: 'maven'
+    apply plugin: 'com.palantir.docker'
+    apply plugin: 'org.springframework.boot'
+
+    test.enabled = System.getProperty("test.enabled", "false") == "true"
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    docker {
+        //noinspection GroovyAssignabilityCheck
+        name "docker.d1m.cn/${project.name}:${version}"
+        files jar.archivePath
+        buildArgs(['JAR_FILE': "${jar.archiveName}"])
+    }
+}

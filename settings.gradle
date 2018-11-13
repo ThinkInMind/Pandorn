@@ -1,0 +1,6 @@
+rootProject.name = 'pandora-service'
+include 'pandora', 'Integration-layer'
+
+project(':pandora').name = 'pandora'
+project(':Integration-layer').name = 'integration-layer'
+

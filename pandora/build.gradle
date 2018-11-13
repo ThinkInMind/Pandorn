@@ -1,0 +1,84 @@
+import tk.mybatis.mapper.generator.MapperPlugin
+
+buildscript {
+    dependencies {
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
+        classpath "gradle.plugin.com.cuisongliu.plugin:mybatis-generator:0.9.6"
+    }
+}
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: "com.cuisongliu.plugin.mybatis-generator"  //mapper生成插件
+
+ext {
+    springCloudVersion = 'Edgware.SR4'
+}
+
+configurations {
+    all*.exclude group: "commons-logging", module: "commons-logging"
+    all*.exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+    all*.exclude group: "org.antlr", module: "antlr4-annotations"
+}
+
+
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '1.5.13.RELEASE'
+    compile group: 'tk.mybatis', name: 'mapper-spring-boot-starter', version: '2.0.4'
+    compile group: 'com.github.pagehelper', name: 'pagehelper-spring-boot-starter', version: '1.2.7'
+    compile('org.springframework.boot:spring-boot-starter-log4j2')
+    compile group: 'com.lmax', name: 'disruptor', version: '3.4.2'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    compile group: 'com.zaxxer', name: 'HikariCP', version: '3.2.0'
+    compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+    compile group: 'com.ecwid.consul', name: 'consul-api', version: '1.3.0'
+    compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.17.RELEASE'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.17'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-consul-all', version: '1.3.0.RELEASE'
+    compile "org.springframework.cloud:spring-cloud-starter-feign"
+    compile group: 'org.springframework.data', name: 'spring-data-redis', version: '1.8.12.RELEASE'
+    compile group: 'redis.clients', name: 'jedis', version: '2.9.0'
+    compile group: 'com.google.zxing', name: 'core', version: '3.3.2'
+    compile group: 'com.google.zxing', name: 'javase', version: '3.3.2'
+    compile group: 'org.json', name: 'json', version: '20171018'
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp', version: '1.5.13.RELEASE'
+    compile group: 'org.springframework', name: 'spring-messaging', version: '4.3.17.RELEASE'
+
+    compile group: 'com.xuxueli', name: 'xxl-job-core', version: '1.9.2'
+
+    compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.1.0.RELEASE'
+
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.2'
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile group: 'org.projectlombok', name: 'lombok', version: '1.18.2'
+}
+
+mbg {
+    overwrite = false
+    consoleable = true
+    jdbc {
+        driver = "com.mysql.jdbc.Driver"
+        url = "jdbc:mysql://10.12.121.53:3306/pandora?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull"
+        username = "root"
+        password = "root"
+    }
+    xml {
+        resourcesProject = "src/main/java"
+        mapperPlugin = MapperPlugin.class
+        mapperMapper = "cn.d1m.pandora.domain.mybatis.BaseMapper"
+        mapperPackage = "cn.d1m.pandora.domain.mybatis.tkmapper"
+        modelPackage = "cn.d1m.pandora.domain.entity"
+        xmlPackage = "tkmapper"
+        tableName = "api_error_log"
+        objectName = "ApiErrorLog"
+        mapperSuffix = "Mapper"
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}

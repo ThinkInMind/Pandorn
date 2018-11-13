@@ -1,0 +1,56 @@
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<!--suppress MybatisGenerateCustomPluginInspection -->
+<generatorConfiguration>
+    <classPathEntry
+            location="/Users/keke/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.46/9a3e63b387e376364211e96827bc27db8d7a92e9/mysql-connector-java-5.1.46.jar"/>
+
+    <classPathEntry
+            location="/Users/keke/.gradle/caches/modules-2/files-2.1/tk.mybatis/mapper/3.3.6/38dc54058722bddab1e4a71326a1e0ca4f00c5c0/mapper-3.3.6.jar"/>
+    <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="useMapperCommentGenerator" value="false"/>
+
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="cn.d1m.pandora.domain.mybatis.BaseMapper"/>
+            <property name="caseSensitive" value="true"/>
+            <property name="forceAnnotation" value="true"/>
+            <property name="beginningDelimiter" value="`"/>
+            <property name="endingDelimiter" value="`"/>
+        </plugin>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://10.60.1.60:3306/pandora"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <!--MyBatis 生成器只需要生成 Model-->
+        <javaModelGenerator targetPackage="cn.d1m.pandora.domain.entity"
+                            targetProject="src/main/java"/>
+        <sqlMapGenerator targetPackage="tkmapper"
+                         targetProject="src/main/resources"/>
+
+        <javaClientGenerator targetPackage="cn.d1m.pandora.domain.mybatis.tkmapper"
+                             targetProject="src/main/java"
+                             type="XMLMAPPER"/>
+
+        <table tableName="card" enableCountByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false"
+               enableUpdateByExample="false">
+        </table>
+        <!--<table tableName="rule_consumer_level" enableCountByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false"-->
+               <!--enableUpdateByExample="false">-->
+            <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
+        <!--</table>-->
+        <!--<table tableName="backend_user_role">-->
+        <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+        <!--<table tableName="backend_role">-->
+        <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--</table>-->
+    </context>
+</generatorConfiguration>
